@@ -1,5 +1,5 @@
 <?php
-require_once("../models/Reserva.php");
+require_once(__DIR__ . "/../models/Reserva.php");
 
 $obj = new Reserva();
 
@@ -8,3 +8,4 @@ if(isset($_POST['guardar'])){
 }
 
 $lista = $obj->listar();
+?>

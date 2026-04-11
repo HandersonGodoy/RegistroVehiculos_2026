@@ -1,5 +1,5 @@
 <?php
-require_once("../models/Vehiculo.php");
+require_once(__DIR__ . "/../models/Vehiculo.php");
 
 $obj = new Vehiculo();
 
@@ -8,3 +8,4 @@ if(isset($_POST['guardar'])){
 }
 
 $lista = $obj->listar();
+?>
