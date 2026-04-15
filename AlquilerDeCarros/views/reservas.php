@@ -32,17 +32,49 @@ require_once(__DIR__ . "/../controllers/reserva_controller.php");
     <button name="devolver">Devolver</button>
 </form>
 
-<h3>Historial de Alquileres</h3>
+<h3>Buscar Historial por Cliente</h3>
+
+<form method="POST">
+    <input name="cliente" placeholder="ID Cliente">
+    <button name="buscar_cliente">Buscar</button>
+</form>
+
+<h3>Buscar Historial por Vehículo</h3>
+
+<form method="POST">
+    <input name="vehiculo" placeholder="ID Vehículo">
+    <button name="buscar_vehiculo">Buscar</button>
+</form>
+
+<h3>Historial</h3>
 
 <?php
-$hist = $obj->historial();
+if($lista){
+    while($r = $lista->fetch_assoc()){
+        echo "<div class='result'>
+        Cliente: ".$r['nombre']." | Vehículo: ".$r['marca']." ".$r['modelo']." 
+        | ".$r['fecha_inicio']." a ".$r['fecha_fin']." 
+        | Estado: ".$r['estado']."
+        </div>";
+    }
+}
+?>
 
-while($h = $hist->fetch_assoc()){
-    echo "<div class='result'>
-    Cliente: ".$h['nombre']." | Vehículo: ".$h['marca']." ".$h['modelo']." 
-    | Desde: ".$h['fecha_inicio']." hasta ".$h['fecha_fin']."
-    | Estado: ".$h['estado']."
-    </div>";
+<h3>Consultar Vehículos Disponibles por Fecha</h3>
+
+<form method="POST">
+    <input type="date" name="inicio">
+    <input type="date" name="fin">
+    <button name="consultar">Consultar</button>
+</form>
+
+<?php
+if(isset($_POST['consultar'])){
+    $disp = $obj->disponiblesPorFecha($_POST['inicio'],$_POST['fin']);
+
+    while($d = $disp->fetch_assoc()){
+        echo "<div class='result'>".$d['marca']." ".$d['modelo']."</div>";
+    }
 }
 ?>
 

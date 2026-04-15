@@ -7,39 +7,28 @@ class Reserva{
         $db = DB::conectar();
 
         if(!$this->disponible($vehiculo)){
-            die("Error: Vehículo no disponible");
+            die("Vehículo no disponible");
         }
 
         if($inicio > $fin){
-            die("Error: Fecha inicio mayor que fecha fin");
+            die("Fechas inválidas");
         }
 
         if($this->tieneCruce($vehiculo,$inicio,$fin)){
-            die("Error: El vehículo ya está reservado en esas fechas");
+            die("Vehículo ocupado en esas fechas");
         }
 
-        $sql = "INSERT INTO reservas(cliente_id,vehiculo_id,fecha_inicio,fecha_fin,estado)
-                VALUES('$cliente','$vehiculo','$inicio','$fin','activa')";
+        $db->query("INSERT INTO reservas(cliente_id,vehiculo_id,fecha_inicio,fecha_fin,estado)
+        VALUES('$cliente','$vehiculo','$inicio','$fin','activa')");
 
-        if(!$db->query($sql)){
-            die("Error SQL Reserva: " . $db->error);
-        }
-
-        // Cambiar estado del vehículo
         $db->query("UPDATE vehiculos SET estado='alquilado' WHERE id=$vehiculo");
     }
 
     public function disponible($vehiculo){
         $db = DB::conectar();
         $res = $db->query("SELECT estado FROM vehiculos WHERE id=$vehiculo");
-
-        if(!$res){
-            die("Error SQL Disponibilidad: " . $db->error);
-        }
-
         $v = $res->fetch_assoc();
-
-        return $v && $v['estado'] == 'disponible';
+        return $v['estado'] == 'disponible';
     }
 
     public function tieneCruce($vehiculo,$inicio,$fin){
@@ -55,11 +44,6 @@ class Reserva{
                 )";
 
         $res = $db->query($sql);
-
-        if(!$res){
-            die("Error SQL Cruce: " . $db->error);
-        }
-
         return $res->num_rows > 0;
     }
 
@@ -73,39 +57,60 @@ class Reserva{
         $db->query("UPDATE vehiculos SET estado='disponible' WHERE id=$vehiculo");
     }
 
+    public function historial(){
+        return $this->listar();
+    }
+
+    public function historialCliente($cliente){
+        $db = DB::conectar();
+
+        return $db->query("
+        SELECT r.*, c.nombre, v.marca, v.modelo
+        FROM reservas r
+        JOIN clientes c ON r.cliente_id = c.id
+        JOIN vehiculos v ON r.vehiculo_id = v.id
+        WHERE cliente_id = $cliente
+        ");
+    }
+
+    public function historialVehiculo($vehiculo){
+        $db = DB::conectar();
+
+        return $db->query("
+        SELECT r.*, c.nombre, v.marca, v.modelo
+        FROM reservas r
+        JOIN clientes c ON r.cliente_id = c.id
+        JOIN vehiculos v ON r.vehiculo_id = v.id
+        WHERE vehiculo_id = $vehiculo
+        ");
+    }
+
+    public function disponiblesPorFecha($inicio,$fin){
+        $db = DB::conectar();
+
+        return $db->query("
+        SELECT * FROM vehiculos v
+        WHERE v.id NOT IN (
+            SELECT vehiculo_id FROM reservas
+            WHERE estado = 'activa'
+            AND (
+                ('$inicio' BETWEEN fecha_inicio AND fecha_fin)
+                OR ('$fin' BETWEEN fecha_inicio AND fecha_fin)
+                OR (fecha_inicio BETWEEN '$inicio' AND '$fin')
+            )
+        )
+        ");
+    }
+
     public function listar(){
         $db = DB::conectar();
 
-        $res = $db->query("
+        return $db->query("
         SELECT r.*, c.nombre, v.marca, v.modelo
         FROM reservas r
         JOIN clientes c ON r.cliente_id = c.id
         JOIN vehiculos v ON r.vehiculo_id = v.id
         ");
-
-        if(!$res){
-            die("Error SQL Listar: " . $db->error);
-        }
-
-        return $res;
-    }
-
-    public function historial(){
-        $db = DB::conectar();
-
-        $res = $db->query("
-        SELECT r.*, c.nombre, v.marca, v.modelo
-        FROM reservas r
-        JOIN clientes c ON r.cliente_id = c.id
-        JOIN vehiculos v ON r.vehiculo_id = v.id
-        ORDER BY r.created_at DESC
-        ");
-
-        if(!$res){
-            die("Error SQL Historial: " . $db->error);
-        }
-
-        return $res;
     }
 }
 ?>
