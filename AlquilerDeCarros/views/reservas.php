@@ -37,7 +37,7 @@ if($lista){
 }
 ?>
 
-<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">⬅ Volver</a>
+<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">Volver</a>
 
 </div>
 

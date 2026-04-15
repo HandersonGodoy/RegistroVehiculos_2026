@@ -20,7 +20,7 @@ require_once(__DIR__ . "/../controllers/vehiculo_controller.php");
 <form method="POST">
     <input name="marca" placeholder="Marca" required>
     <input name="modelo" placeholder="Modelo" required>
-    <input name="año" type="number" required>
+    <input name="año" placeholder="Año" type="number" required>
     <input name="categoria" placeholder="Categoría">
     <button name="guardar">Guardar</button>
 </form>
@@ -37,7 +37,7 @@ if($lista){
 }
 ?>
 
-<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">⬅ Volver</a>
+<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">Volver</a>
 
 </div>
 
