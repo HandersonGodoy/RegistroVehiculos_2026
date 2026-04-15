@@ -9,36 +9,49 @@ require_once(__DIR__ . "/../controllers/cliente_controller.php");
 <html>
 <head>
     <title>Clientes</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../Styles.css">
 </head>
 <body>
 
+<div class="section-bg">
 <div class="container">
 
-<h2>Registrar Cliente</h2>
+<h2 class="title">Gestión de Clientes</h2>
 
-<form method="POST">
-    <input name="nombre" placeholder="Nombre" required>
-    <input name="telefono" placeholder="Teléfono">
-    <input name="correo" placeholder="Correo">
-    <input name="licencia" placeholder="Licencia">
-    <button name="guardar">Guardar</button>
-</form>
+<div class="cards-grid">
 
-<h3>Lista de Clientes</h3>
+<div class="feature-card">
+    <h3>Registrar Cliente</h3>
 
-<?php
-if($lista){
-    while($c = $lista->fetch_assoc()){
-        echo "<div class='result'>
-        ID: ".$c['id']." - ".$c['nombre']."
-        </div>";
+    <form method="POST">
+        <input name="nombre" placeholder="Nombre" required>
+        <input name="telefono" placeholder="Teléfono">
+        <input name="correo" placeholder="Correo">
+        <input name="licencia" placeholder="Licencia">
+
+        <button class="form-btn" name="guardar">Guardar</button>
+    </form>
+</div>
+
+<div class="feature-card" style="grid-column: span 2;">
+    <h3>Lista de Clientes</h3>
+
+    <?php
+    if($lista){
+        while($c = $lista->fetch_assoc()){
+            echo "<div class='result'>
+            ID: ".$c['id']." - ".$c['nombre']."
+            </div>";
+        }
     }
-}
-?>
+    ?>
+</div>
 
-<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">Volver</a>
+</div>
 
+<a href="../index.php" class="back-link">Volver</a>
+
+</div>
 </div>
 
 </body>

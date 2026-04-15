@@ -9,77 +9,80 @@ require_once(__DIR__ . "/../controllers/reserva_controller.php");
 <html>
 <head>
     <title>Reservas</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../Styles.css">
 </head>
 <body>
 
+<div class="section-bg">
 <div class="container">
 
-<h2>Crear Reserva</h2>
+<h2 class="title">Gestión de Reservas</h2>
 
-<form method="POST">
-    <input name="cliente" placeholder="ID Cliente" required>
-    <input name="vehiculo" placeholder="ID Vehículo" required>
-    <input type="date" name="inicio" required>
-    <input type="date" name="fin" required>
-    <button name="guardar">Reservar</button>
-</form>
+<div class="cards-grid">
 
-<h3>Devolver Vehículo</h3>
+<div class="feature-card">
+    <h3>Crear Reserva</h3>
 
-<form method="POST">
-    <input name="vehiculo" placeholder="ID Vehículo" required>
-    <button name="devolver">Devolver</button>
-</form>
+    <form method="POST">
+        <input name="cliente" placeholder="ID Cliente" required>
+        <input name="vehiculo" placeholder="ID Vehículo" required>
+        <input type="date" name="inicio" required>
+        <input type="date" name="fin" required>
 
-<h3>Buscar Historial por Cliente</h3>
+        <button class="form-btn" name="guardar">Reservar</button>
+    </form>
+</div>
 
-<form method="POST">
-    <input name="cliente" placeholder="ID Cliente">
-    <button name="buscar_cliente">Buscar</button>
-</form>
+<div class="feature-card">
+    <h3>Devolver Vehículo</h3>
 
-<h3>Buscar Historial por Vehículo</h3>
+    <form method="POST">
+        <input name="vehiculo" placeholder="ID Vehículo" required>
+        <button class="form-btn" name="devolver">Devolver</button>
+    </form>
+</div>
 
-<form method="POST">
-    <input name="vehiculo" placeholder="ID Vehículo">
-    <button name="buscar_vehiculo">Buscar</button>
-</form>
+<div class="feature-card" style="grid-column: span 3;">
+    <h3>Historial</h3>
 
-<h3>Historial</h3>
-
-<?php
-if($lista){
-    while($r = $lista->fetch_assoc()){
-        echo "<div class='result'>
-        Cliente: ".$r['nombre']." | Vehículo: ".$r['marca']." ".$r['modelo']." 
-        | ".$r['fecha_inicio']." a ".$r['fecha_fin']." 
-        | Estado: ".$r['estado']."
-        </div>";
+    <?php
+    if($lista){
+        while($r = $lista->fetch_assoc()){
+            echo "<div class='result'>
+            ".$r['nombre']." | ".$r['marca']." ".$r['modelo']." 
+            | ".$r['fecha_inicio']." a ".$r['fecha_fin']." 
+            | ".$r['estado']."
+            </div>";
+        }
     }
-}
-?>
+    ?>
+</div>
 
-<h3>Consultar Vehículos Disponibles por Fecha</h3>
+<div class="feature-card" style="grid-column: span 3;">
+    <h3>Consultar Disponibles</h3>
 
-<form method="POST">
-    <input type="date" name="inicio">
-    <input type="date" name="fin">
-    <button name="consultar">Consultar</button>
-</form>
+    <form method="POST">
+        <input type="date" name="inicio">
+        <input type="date" name="fin">
+        <button class="form-btn" name="consultar">Consultar</button>
+    </form>
 
-<?php
-if(isset($_POST['consultar'])){
-    $disp = $obj->disponiblesPorFecha($_POST['inicio'],$_POST['fin']);
+    <?php
+    if(isset($_POST['consultar'])){
+        $disp = $obj->disponiblesPorFecha($_POST['inicio'],$_POST['fin']);
 
-    while($d = $disp->fetch_assoc()){
-        echo "<div class='result'>".$d['marca']." ".$d['modelo']."</div>";
+        while($d = $disp->fetch_assoc()){
+            echo "<div class='result'>".$d['marca']." ".$d['modelo']."</div>";
+        }
     }
-}
-?>
+    ?>
+</div>
 
-<br><a href="/RegistroVehiculos_2026/AlquilerDeCarros/index.php">Volver</a>
+</div>
 
+<a href="../index.php" class="back-link">Volver</a>
+
+</div>
 </div>
 
 </body>
