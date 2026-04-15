@@ -3,11 +3,11 @@ require_once(__DIR__ . "/../config/db.php");
 
 class Vehiculo{
 
-    public function guardar($marca,$modelo,$anio,$categoria){
+    public function guardar($marca,$modelo,$año,$categoria){
         $db = DB::conectar();
 
-        $sql = "INSERT INTO vehiculos(marca,modelo,anio,categoria)
-                VALUES('$marca','$modelo','$anio','$categoria')";
+        $sql = "INSERT INTO vehiculos(marca,modelo,año,categoria)
+                VALUES('$marca','$modelo','$año','$categoria')";
 
         if(!$db->query($sql)){
             die("Error SQL Vehiculo: " . $db->error);
