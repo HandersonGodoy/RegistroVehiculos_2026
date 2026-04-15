@@ -25,15 +25,24 @@ require_once(__DIR__ . "/../controllers/reserva_controller.php");
     <button name="guardar">Reservar</button>
 </form>
 
-<h3>Lista de Reservas</h3>
+<h3>Devolver Vehículo</h3>
+
+<form method="POST">
+    <input name="vehiculo" placeholder="ID Vehículo" required>
+    <button name="devolver">Devolver</button>
+</form>
+
+<h3>Historial de Alquileres</h3>
 
 <?php
-if($lista){
-    while($r = $lista->fetch_assoc()){
-        echo "<div class='result'>".$r['id']." - Cliente: ".$r['nombre']." - Vehículo: ".$r['marca']." ".$r['modelo']."</div>";
-    }
-}else{
-    echo "Error en la consulta";
+$hist = $obj->historial();
+
+while($h = $hist->fetch_assoc()){
+    echo "<div class='result'>
+    Cliente: ".$h['nombre']." | Vehículo: ".$h['marca']." ".$h['modelo']." 
+    | Desde: ".$h['fecha_inicio']." hasta ".$h['fecha_fin']."
+    | Estado: ".$h['estado']."
+    </div>";
 }
 ?>
 

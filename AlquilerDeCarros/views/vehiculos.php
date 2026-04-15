@@ -20,7 +20,7 @@ require_once(__DIR__ . "/../controllers/vehiculo_controller.php");
 <form method="POST">
     <input name="marca" placeholder="Marca" required>
     <input name="modelo" placeholder="Modelo" required>
-    <input name="año" placeholder="Año" type="number" required>
+    <input name="año" type="number" placeholder="Año" required>
     <input name="categoria" placeholder="Categoría">
     <button name="guardar">Guardar</button>
 </form>
@@ -30,10 +30,20 @@ require_once(__DIR__ . "/../controllers/vehiculo_controller.php");
 <?php
 if($lista){
     while($v = $lista->fetch_assoc()){
-        echo "<div class='result'>".$v['id']." - ".$v['marca']." ".$v['modelo']." (".$v['estado'].")</div>";
+        echo "<div class='result'>
+        ID: ".$v['id']." - ".$v['marca']." ".$v['modelo']." 
+        | Año: ".$v['año']." | Estado: ".$v['estado']."
+        </div>";
     }
-}else{
-    echo "Error en la consulta";
+}
+?>
+
+<h3>Vehículos Disponibles</h3>
+
+<?php
+$disp = $obj->disponibles();
+while($d = $disp->fetch_assoc()){
+    echo "<div class='result'>".$d['marca']." ".$d['modelo']."</div>";
 }
 ?>
 

@@ -30,10 +30,10 @@ require_once(__DIR__ . "/../controllers/cliente_controller.php");
 <?php
 if($lista){
     while($c = $lista->fetch_assoc()){
-        echo "<div class='result'>".$c['id']." - ".$c['nombre']."</div>";
+        echo "<div class='result'>
+        ID: ".$c['id']." - ".$c['nombre']."
+        </div>";
     }
-}else{
-    echo "Error en la consulta";
 }
 ?>
 
